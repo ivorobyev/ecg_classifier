@@ -77,7 +77,6 @@ function draw_graph(source_ecg, pat_fragments) {
         .append('g')
         .call(d3.axisLeft(y));
   
-    console.log(data)
     svG
         .append("path")
         .datum(data)
@@ -90,14 +89,12 @@ function draw_graph(source_ecg, pat_fragments) {
         )
     
     for (var pat in pat_fragments){
-        console.log(pat_fragments[pat])
-        console.log('---------------')
         svG
-            .append("pat")
+            .append("path")
             .datum(pat_fragments[pat])
             .attr("fill", "none")
             .attr("stroke", "red")
-            .attr("stroke-width", 3.5)
+            .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(function(d) { return x(d[0]) })
                 .y(function(d) { return y(d[1]) })
