@@ -1,6 +1,6 @@
 # ecg_classifier
 
-##Загрузка ЭКГ и Модели
+*Загрузка ЭКГ и Модели
 
 ```python
 from keras.models import load_model
