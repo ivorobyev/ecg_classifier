@@ -14,14 +14,30 @@ model = load_model('ecg_classifier.h5')
 *Пример анализа исследования ЭКГ (скользящее окно)*
 
 ```python
-start_index = 0
-end_index = 187
-results = {}
-while end_index <= len(ecg):
-    res = model.predict(ecg[start_index:end_index][np.newaxis,:,:])
-    results[(start_index, end_index)] = res
-    start_index += 1
-    end_index += 1
+!pip install py-ecg-detectors
+
+from keras.models import load_model
+import numpy as np
+import pandas as pd
+from ecgdetectors import Detectors
+
+detectors = Detectors(187)
+r_peaks = detectors.two_average_detector(ecg)
+
+sample = pd.read_csv('sample.csv')
+ecg = np.array(sample)
+
+model = load_model('ecg_classifier.h5')
+
+results = []
+for a in r_peaks:
+    if a + 187 > len(ecg):
+        break
+    res = model.predict(ecg[a:a+187][np.newaxis,:,:])
+    results.append(res)
+
+result = np.average(np.array(results), axis = 0)
+print(result)
 ```
 
 В данном случае на выходе получаем словарь в ключах которого находятся кортежи из начала и конца интервала, значения - массив из вероятностей каждой патологии.
